@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xx.edu.mapper.UserMapper">
+
+    <insert id="insert" parameterType="com.xx.edu.model.User">
+        INSERT INTO userinfo VALUES (#{userID}, #{userName}, #{password}, #{grade}, #{major}, #{profilePhoto})
+    </insert>
+
+    <insert id="insertMatch" parameterType="com.xx.edu.model.Match">
+        INSERT INTO matchs VALUES (null, #{matchName}, #{picture}, #{overview}, #{arrangement}, #{participant}, #{organizer}, #{categoryID}, #{status}, #{prize}, null, #{applyTime}, null, null)
+    </insert>
+
+    <insert id="insertGroup" parameterType="com.xx.edu.model.Group">
+        INSERT INTO groups VALUES (null, #{userList}, #{leader}, #{matchID})
+    </insert>
+
+    <insert id="insertCompetitor" parameterType="com.xx.edu.model.Competitor">
+        INSERT INTO competitor VALUES (null, #{userID}, #{groupID}, #{matchID})
+    </insert>
+
+    <insert id="submitWork" parameterType="com.xx.edu.model.Work">
+        INSERT INTO works VALUES (null, #{matchID}, #{groupID}, null, #{message}, #{content})
+    </insert>
+
+    <update id="update" parameterType="com.xx.edu.model.User">
+        UPDATE userinfo SET userName = #{userName}, password = #{password}, grade = #{grade}, major = #{major}, profilePhoto = #{profilePhoto}
+        WHERE userID = #{userID}
+    </update>
+
+    <select id="findById" parameterType="int" resultType="com.xx.edu.model.User">
+        SELECT * FROM userinfo WHERE userID = #{userID}
+    </select>
+
+    <select id="getUserListByUserName" parameterType="String" resultType="com.xx.edu.model.User">
+        SELECT * FROM userinfo WHERE userName LIKE '%${value}%'
+    </select>
+
+    <select id="findMatchByName" parameterType="String" resultType="com.xx.edu.model.Match">
+        SELECT * FROM matchs WHERE matchName = #{matchName}
+    </select>
+
+    <select id="getAllMatchCategories" resultType="com.xx.edu.model.MatchCategory">
+        SELECT * FROM category
+    </select>
+
+    <select id="findMatchByID" parameterType="int" resultType="com.xx.edu.model.Match">
+        SELECT * FROM matchs WHERE matchID = #{matchID}
+    </select>
+
+    <update id="updateMatch" parameterType="com.xx.edu.model.Match">
+        UPDATE matchs SET judges = #{judges}
+        WHERE matchID = #{matchID}
+    </update>
+
+    <select id="getMatchByUserID" parameterType="int" resultType="com.xx.edu.model.Match">
+        SELECT * FROM matchs WHERE organizer = #{userID}
+    </select>
+
+    <select id="findActiveMatch" resultType="com.xx.edu.model.Match">
+        SELECT * FROM matchs WHERE status = '进行中'
+    </select>
+
+    <select id="findFinishedMatch" resultType="com.xx.edu.model.Match">
+        SELECT * FROM matchs WHERE status = '已结束'
+    </select>
+
+    <select id="findMatchByCategoryID" parameterType="int" resultType="com.xx.edu.model.Match">
+        SELECT * FROM matchs WHERE categoryID = #{categoryID} AND status != '待审核'
+    </select>
+
+    <select id="findGroupByLeader" parameterType="String" resultType="com.xx.edu.model.Group">
+        SELECT * FROM groups WHERE leader = #{leader}
+    </select>
+
+    <select id="findUserByName" parameterType="String" resultType="com.xx.edu.model.User">
+        SELECT * FROM userinfo WHERE userName = #{userName}
+    </select>
+
+    <select id="findCompetitorsByMatchID" parameterType="int" resultType="com.xx.edu.model.Competitor">
+        SELECT * FROM competitor WHERE matchID = #{matchID}
+    </select>
+
+    <select id="findCompetitorByUserID" parameterType="int" resultType="com.xx.edu.model.Competitor">
+        SELECT * FROM competitor WHERE userID = #{userID}
+    </select>
+
+    <select id="findWorkByGroupID" parameterType="int" resultType="com.xx.edu.model.Work">
+        SELECT * FROM works WHERE groupID = #{groupID}
+    </select>
+
+    <select id="getAllMatchs" resultType="com.xx.edu.model.Match">
+        SELECT * FROM matchs WHERE status != '待审核'
+    </select>
+
+    <select id="getWorksByMatchID" parameterType="int" resultType="com.xx.edu.model.Work">
+        SELECT * FROM works WHERE matchID = #{matchID}
+    </select>
+
+    <select id="findWorkByID" parameterType="int" resultType="com.xx.edu.model.Work">
+        SELECT * FROM works WHERE workID = #{workID}
+    </select>
+
+    <update id="mark" parameterType="com.xx.edu.model.Work">
+        UPDATE works SET score = #{score}
+        WHERE workID = #{workID}
+    </update>
+</mapper>

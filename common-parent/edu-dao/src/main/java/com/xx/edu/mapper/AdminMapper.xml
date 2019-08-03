@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xx.edu.mapper.AdminMapper">
+
+    <select id="getUnderReviewMatchs" resultType="com.xx.edu.model.Match">
+        SELECT * FROM matchs WHERE status = '待审核'
+    </select>
+
+    <select id="getOnTheMarchMatchs" resultType="com.xx.edu.model.Match">
+        SELECT * FROM matchs WHERE status = '进行中'
+    </select>
+
+    <select id="getFinishedMatchs" resultType="com.xx.edu.model.Match">
+        SELECT * FROM matchs WHERE status = '已结束'
+    </select>
+
+    <select id="findById" parameterType="int" resultType="com.xx.edu.model.Match">
+        SELECT * FROM matchs WHERE matchID = #{matchID}
+    </select>
+
+    <update id="update" parameterType="com.xx.edu.model.Match">
+        UPDATE matchs SET matchName = #{matchName}, picture = #{picture}, overview = #{overview}, arrangement = #{arrangement},
+        participant = #{participant}, organizer = #{organizer}, status = #{status}, prize = #{prize},judges = #{judges},
+        applyTime = #{applyTime},releaseTime = #{releaseTime},endTime = #{endTime}
+        WHERE matchID = #{matchID}
+    </update>
+
+</mapper>
